@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2026/05/26 12:57:29.000.073,=C:\Users\User\Documents\Embarcadero\Studio\Projects\Project2PCH1.h</Transaction>
+    <Transaction>2026/05/26 12:57:29.000.145,=C:\Users\User\Documents\Embarcadero\Studio\Projects\Unit3.cpp</Transaction>
+    <Transaction>2026/05/26 13:00:32.000.344,C:\Users\User\Documents\Embarcadero\Studio\Projects\Unit3.cpp=C:\Users\User\Documents\Embarcadero\Studio\Projects\Archivos\Unit3.cpp</Transaction>
+    <Transaction>2026/05/26 13:00:32.000.344,C:\Users\User\Documents\Embarcadero\Studio\Projects\Unit3.h=C:\Users\User\Documents\Embarcadero\Studio\Projects\Archivos\Unit3.h</Transaction>
+    <Transaction>2026/05/26 13:00:32.000.357,C:\Users\User\Documents\Embarcadero\Studio\Projects\Project2.cbproj=C:\Users\User\Documents\Embarcadero\Studio\Projects\Archivos\Archivos.cbproj</Transaction>
+    <Transaction>2026/05/26 13:00:32.000.344,C:\Users\User\Documents\Embarcadero\Studio\Projects\Unit3.dfm=C:\Users\User\Documents\Embarcadero\Studio\Projects\Archivos\Unit3.dfm</Transaction>
+    <Transaction>2026/05/26 13:00:32.000.315,C:\Users\User\Documents\Embarcadero\Studio\Projects\Project2PCH1.h=C:\Users\User\Documents\Embarcadero\Studio\Projects\Archivos\ArchivosPCH1.h</Transaction>
+    <Transaction>2026/05/26 13:00:42.000.431,C:\Users\User\Documents\Embarcadero\Studio\Projects\Archivos\Archivos.cbproj=C:\Users\User\Documents\Embarcadero\Studio\Projects\Archivos\Archivos.cbproj</Transaction>
+  </Transactions>
+</BorlandProject>
