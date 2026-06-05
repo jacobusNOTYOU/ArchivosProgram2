@@ -158,6 +158,20 @@ object Form3: TForm3
     ParentFont = False
     TabOrder = 9
   end
+  object Button9: TButton
+    Left = 8
+    Top = 310
+    Width = 81
+    Height = 31
+    Caption = 'Button3'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 10
+  end
   object OpenTextFileDialog1: TOpenTextFileDialog
     Left = 200
     Top = 128
