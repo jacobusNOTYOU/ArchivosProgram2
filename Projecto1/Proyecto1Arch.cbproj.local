@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
-  <Transactions>
-    <Transaction>2026/06/08 10:15:45.442,=C:\Users\User\Documents\Embarcadero\Studio\Projects\Project2PCH1.h</Transaction>
-    <Transaction>2026/06/08 10:15:45.537,=C:\Users\User\Documents\Embarcadero\Studio\Projects\Unit3.cpp</Transaction>
-    <Transaction>2026/06/08 10:16:20.477,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Proyecto1ArchPCH1.h=C:\Users\User\Documents\Embarcadero\Studio\Projects\Project2PCH1.h</Transaction>
-    <Transaction>2026/06/08 10:16:20.488,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit3.cpp=C:\Users\User\Documents\Embarcadero\Studio\Projects\Unit3.cpp</Transaction>
-    <Transaction>2026/06/08 10:16:20.488,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit3.dfm=C:\Users\User\Documents\Embarcadero\Studio\Projects\Unit3.dfm</Transaction>
-    <Transaction>2026/06/08 10:16:20.488,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit3.h=C:\Users\User\Documents\Embarcadero\Studio\Projects\Unit3.h</Transaction>
-    <Transaction>2026/06/08 10:16:20.496,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Proyecto1Arch.cbproj=C:\Users\User\Documents\Embarcadero\Studio\Projects\Project2.cbproj</Transaction>
-    <Transaction>2026/06/08 10:16:28.016,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit1.cpp=C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit3.cpp</Transaction>
-    <Transaction>2026/06/08 10:16:28.016,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit1.dfm=C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit3.dfm</Transaction>
-    <Transaction>2026/06/08 10:16:28.016,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit1.h=C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit3.h</Transaction>
-    <Transaction>2026/06/08 10:16:30.618,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Proyecto1Arch.cbproj=C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Proyecto1Arch.cbproj</Transaction>
+	<Transactions>
+    <Transaction>2026/06/08 10:15:45.000.537,=C:\Users\User\Documents\Embarcadero\Studio\Projects\Unit3.cpp</Transaction>
+    <Transaction>2026/06/08 10:15:45.000.442,=C:\Users\User\Documents\Embarcadero\Studio\Projects\Project2PCH1.h</Transaction>
+    <Transaction>2026/06/08 10:16:20.000.488,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit3.h=C:\Users\User\Documents\Embarcadero\Studio\Projects\Unit3.h</Transaction>
+    <Transaction>2026/06/08 10:16:20.000.488,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit3.cpp=C:\Users\User\Documents\Embarcadero\Studio\Projects\Unit3.cpp</Transaction>
+    <Transaction>2026/06/08 10:16:20.000.488,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit3.dfm=C:\Users\User\Documents\Embarcadero\Studio\Projects\Unit3.dfm</Transaction>
+    <Transaction>2026/06/08 10:16:20.000.496,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Proyecto1Arch.cbproj=C:\Users\User\Documents\Embarcadero\Studio\Projects\Project2.cbproj</Transaction>
+    <Transaction>2026/06/08 10:16:20.000.477,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Proyecto1ArchPCH1.h=C:\Users\User\Documents\Embarcadero\Studio\Projects\Project2PCH1.h</Transaction>
+    <Transaction>2026/06/08 10:16:28.000.016,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit1.h=C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit3.h</Transaction>
+    <Transaction>2026/06/08 10:16:28.000.016,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit1.dfm=C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit3.dfm</Transaction>
+    <Transaction>2026/06/08 10:16:28.000.016,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit1.cpp=C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Unit3.cpp</Transaction>
+    <Transaction>2026/06/08 10:16:30.000.618,C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Proyecto1Arch.cbproj=C:\Users\User\Documents\Embarcadero\Studio\Projects\ArchivosProgram2\Proyecto1Arch.cbproj</Transaction>
   </Transactions>
 </BorlandProject>

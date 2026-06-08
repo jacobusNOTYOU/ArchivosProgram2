@@ -1,0 +1,30 @@
+//---------------------------------------------------------------------------
+
+#ifndef Unit1H
+#define Unit1H
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+#include <System.ImageList.hpp>
+#include <Vcl.Dialogs.hpp>
+#include <Vcl.ExtDlgs.hpp>
+#include <Vcl.ImgList.hpp>
+#include <Vcl.Menus.hpp>
+#include <fstream>
+//---------------------------------------------------------------------------
+class TForm3 : public TForm
+{
+__published:	// IDE-managed Components
+	TMainMenu *MainMenu1;
+	TImageList *ImageList1;
+	TOpenTextFileDialog *OpenTextFileDialog1;
+private:	// User declarations
+public:		// User declarations
+	__fastcall TForm3(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TForm3 *Form3;
+//---------------------------------------------------------------------------
+#endif

@@ -7,10 +7,25 @@
 #include <Vcl.Controls.hpp>
 #include <Vcl.StdCtrls.hpp>
 #include <Vcl.Forms.hpp>
+#include <System.ImageList.hpp>
+#include <Vcl.Dialogs.hpp>
+#include <Vcl.ExtDlgs.hpp>
+#include <Vcl.ImgList.hpp>
+#include <Vcl.Menus.hpp>
+#include <fstream>
 //---------------------------------------------------------------------------
 class TForm3 : public TForm
 {
 __published:	// IDE-managed Components
+	TMainMenu *MainMenu1;
+	TImageList *ImageList1;
+	TOpenTextFileDialog *OpenTextFileDialog1;
+	TMenuItem *Menu1;
+	TMenuItem *Menu2;
+	TMenuItem *BackTrack1;
+	TEdit *Edit1;
+	void __fastcall Menu2Click(TObject *Sender);
+	void __fastcall BackTrack1Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TForm3(TComponent* Owner);
