@@ -284,5 +284,246 @@ void __fastcall TForm3::Button7Click(TObject *Sender)
 	}
 }
 //---------------------------------------------------------------------------
+//  Devuelve la cantidad de digitos pares que tiene un numero
+int CantidadDeDigitosPares(int x)
+{
+	int r = 0;
+	byte t;
+	while(x != 0)
+	{
+		t = x % 10;
+		x = x / 10;
+		if(t % 2 == 0)
+			r++;
+	}
+	return r;
+}
+//  Devuelve la cantidad de numeros que tienen al menos 2 digitos pares
+byte NumerosCon2DigitosPares(AnsiString nom)
+{
+	byte cant = 0;
+	char x;
+	int num = 0;
+	fstream f(nom.c_str());
 
+	if(!f.fail())
+	{
+		while(!f.eof())
+		{
+			x = f.get();
+			if(isdigit(x) && !f.eof())
+			{
+				while(isdigit(x) && !f.eof())
+				{
+					num = num * 10 + x - 48;
+					x = f.get();
+				}
+				if(CantidadDeDigitosPares(num) >= 2)
+					cant++;
+				num = 0;
+			}
+		}
+		f.close();
+    }
+
+	return cant;
+}
+void __fastcall TForm3::Button8Click(TObject *Sender)
+{
+	if(OpenTextFileDialog1->Execute())
+	{
+        Edit1->Text = OpenTextFileDialog1->FileName;
+		Edit2->Text = NumerosCon2DigitosPares(OpenTextFileDialog1->FileName);
+	}
+}
+//---------------------------------------------------------------------------
+//  Elimina el primer numero de cada linea
+void Eliminar1erNumeroDeCadaLinea(AnsiString nom)
+{
+	char e;
+	bool primer = true;
+	fstream f(nom.c_str());
+	fstream t("temporal.txt", ios::out);
+	if(!f.fail())
+	{
+		while(!f.eof())
+		{
+			e = f.get();
+			if(((isdigit(e) && !primer) || !isdigit(e)) && !f.eof())
+			{
+				t.put(e);
+			}
+			else
+			{
+				if(!isdigit(f.peek()))
+					primer = false;
+			}
+			if(e == '\n')
+                primer = true;
+		}
+		f.close();
+		t.close();
+	}
+	remove(nom.c_str());
+	rename("temporal.txt", nom.c_str());
+}
+
+void __fastcall TForm3::Button9Click(TObject *Sender)
+{
+	if(OpenTextFileDialog1->Execute())
+	{
+		Edit1->Text = OpenTextFileDialog1->FileName;
+		Eliminar1erNumeroDeCadaLinea(OpenTextFileDialog1->FileName);
+	}
+}
+//---------------------------------------------------------------------------
+//	Devuelve la longitud de la linea mas larga
+int LongitudDeLineaMayor(AnsiString nom)
+{
+	int max = 0;
+	int longitud = 0;
+	char x;
+	fstream f(nom.c_str());
+	if(!f.fail())
+	{
+		while(!f.eof())
+		{
+			x = f.get();
+			if(!(x == '\n') && !f.eof())
+				longitud++;
+			else
+			{
+				if(longitud > max)
+					 max = longitud;
+				longitud = 0;
+			}
+		}
+		f.close();
+	}
+	return max;
+}
+void __fastcall TForm3::Button10Click(TObject *Sender)
+{
+	if(OpenTextFileDialog1->Execute())
+	{
+		Edit1->Text = OpenTextFileDialog1->FileName;
+		Edit2->Text = LongitudDeLineaMayor(OpenTextFileDialog1->FileName);
+	}
+}
+//---------------------------------------------------------------------------
+//	Justifica el text a la izquierda
+void JustificarIzquierda(AnsiString nom)
+{
+	char x;
+	bool primer = false;
+	fstream f(nom.c_str());
+	fstream t("temporal.txt", ios::out);
+	if(!f.fail())
+	{
+		while(!f.eof())
+		{
+			x = f.get();
+			if(isgraph(x) && !primer)
+				primer = true;
+			if(primer && !f.eof())
+			{
+				t.put(x);
+				if(x == '\n')
+					primer = false;
+			}
+		}
+		f.close();
+		t.close();
+	}
+	remove(nom.c_str());
+	rename("temporal.txt", nom.c_str());
+}
+
+
+void __fastcall TForm3::Button11Click(TObject *Sender)
+{
+	if(OpenTextFileDialog1->Execute())
+	{
+		Edit1->Text = OpenTextFileDialog1->FileName;
+		JustificarIzquierda(OpenTextFileDialog1->FileName);
+	}
+}
+//---------------------------------------------------------------------------
+//  Devuelve la longitud total de una linea sin el identado
+int LongitudMaxDeLinea(AnsiString nom)
+{
+	int lmax = 0;
+	int l;
+	AnsiString aux = "";
+	char x = ' ';
+	fstream f(nom.c_str(), ios::in);
+	if(!f.fail())
+	{
+		while(!f.eof())
+		{
+			l = 0;
+			while(!f.eof() && x != '\n')
+			{
+				x = f.get();
+				l++;
+			}
+			if(l > lmax)
+				lmax = l;
+            x = f.get();
+		}
+		f.close();
+	}
+	return lmax;
+}
+//	Justifica un texto a la derecha
+void JustificarDerecha(AnsiString nom)
+{
+	AnsiString ln;
+	int maxLength = LongitudMaxDeLinea(nom);
+	char x = ' ';
+	fstream f(nom.c_str());
+	fstream t("temporal.txt", ios::out);
+	if(!f.fail())
+	{
+		while(!f.eof())
+		{
+			ln = "";
+			int i = 1;
+			while((i <= maxLength) && !f.eof() && x != '\n')
+			{
+				x = f.get();
+				if(!f.eof())
+					ln = ln + x;
+
+            }
+			if(f.eof())
+				maxLength--;
+
+			while(ln.Length() < maxLength)
+				ln = " " + ln;
+
+			while(ln.Length() > maxLength)
+				ln.Delete(1, 1);
+
+            x = f.get();
+
+			t.write(ln.c_str(), ln.Length());
+		}
+		f.close();
+        t.close();
+	}
+	remove(nom.c_str());
+    rename("temporal.txt", nom.c_str());
+}
+
+
+void __fastcall TForm3::Button12Click(TObject *Sender)
+{
+	if(OpenTextFileDialog1->Execute())
+	{
+		Edit1->Text = OpenTextFileDialog1->FileName;
+		JustificarDerecha(OpenTextFileDialog1->FileName);
+    }
+}
+//---------------------------------------------------------------------------
 

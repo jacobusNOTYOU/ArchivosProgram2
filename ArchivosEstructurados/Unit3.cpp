@@ -1,0 +1,58 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit3.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm3 *Form3;
+//---------------------------------------------------------------------------
+__fastcall TForm3::TForm3(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm3::Button1Click(TObject *Sender)
+{
+	RegAlumno reg;
+	AnsiString aux;
+	reg.cod = StrToInt(Edit1->Text);
+	aux = Edit2->Text;
+	strcpy(reg.nom, aux.c_str());
+	reg.fecha.dia = StrToInt(Edit3->Text);
+	reg.fecha.mes = StrToInt(Edit4->Text);
+	reg.fecha.ano = StrToInt(Edit5->Text);
+
+	fstream f(nom.c_str(), ios::binary | ios::in | ios::out);
+	f.write((char*)&reg, sizeof(reg));
+    f.close();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm3::FormCreate(TObject *Sender)
+{
+	ruta = "C:\\Users\\User\\Documents\\Embarcadero\\Studio\\Projects\\ArchivosProgram2\\ArchivosEstructurados\\Dat\\";
+	nom = ruta + "Alumnos.dat";
+	fstream f(nom.c_str(), ios::binary);
+	if(f.fail())
+	{
+        f.open(nom.c_str(), ios::binary | ios::out);
+	}
+    f.close();
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TForm3::Button2Click(TObject *Sender)
+{
+	byte i, x;
+	AnsiString linea = " ";
+	fstream f(nom.c_str(), ios::binary | ios::in);
+	for (i = 1; i < 28; i++) {
+			f.read((char*)&x, 1);
+            linea = linea + IntToStr(x) + ',';
+	}
+	f.close();
+    Edit2->Text = linea;
+}
+//---------------------------------------------------------------------------
