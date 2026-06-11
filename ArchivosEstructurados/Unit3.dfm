@@ -46,7 +46,8 @@ object Form3: TForm3
     Width = 65
     Height = 23
     TabOrder = 0
-    Text = 'Edit1'
+    Text = '0'
+    OnExit = Edit1Exit
   end
   object Edit2: TEdit
     Left = 111
@@ -94,7 +95,7 @@ object Form3: TForm3
     Top = 192
     Width = 75
     Height = 25
-    Caption = 'Cargar'
+    Caption = 'Listado'
     TabOrder = 6
     OnClick = Button2Click
   end

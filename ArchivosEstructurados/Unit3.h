@@ -26,6 +26,7 @@ __published:	// IDE-managed Components
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall Button2Click(TObject *Sender);
+	void __fastcall Edit1Exit(TObject *Sender);
 private:	// User declarations
 	AnsiString ruta, nom;
 public:		// User declarations
@@ -34,7 +35,7 @@ public:		// User declarations
 struct TFecha{
 	byte dia;
 	byte mes;
-	Word ano;
+	Word año;
 }; // 4b
 struct RegAlumno{
 	Word cod;

@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 
 #include <vcl.h>
 #pragma hdrstop
@@ -16,43 +16,125 @@ __fastcall TForm3::TForm3(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TForm3::Button1Click(TObject *Sender)
 {
-	RegAlumno reg;
+	RegAlumno reg, reg2;
 	AnsiString aux;
+	bool hallado = false;
+
 	reg.cod = StrToInt(Edit1->Text);
 	aux = Edit2->Text;
 	strcpy(reg.nom, aux.c_str());
 	reg.fecha.dia = StrToInt(Edit3->Text);
 	reg.fecha.mes = StrToInt(Edit4->Text);
-	reg.fecha.ano = StrToInt(Edit5->Text);
+	reg.fecha.año = StrToInt(Edit5->Text);
 
 	fstream f(nom.c_str(), ios::binary | ios::in | ios::out);
-	f.write((char*)&reg, sizeof(reg));
-    f.close();
+	if(!f.fail())
+	{
+		while(!f.eof() && !hallado)
+		{
+			f.read((char*)& reg2, sizeof(reg2));
+			if(!f.eof())
+				hallado = (reg2.cod == reg.cod);
+		}
+		if(hallado)
+		{
+			f.seekg(-sizeof(reg), ios::cur);
+			f.write((char*)&reg, sizeof(reg));
+		}
+		else
+		{
+			f.close();
+			f.open(nom.c_str(), ios::binary | ios::app);
+			f.write((char*)& reg, sizeof(reg));
+		}
+		f.close();
+
+		Edit1->Text = "0";
+		Edit2->Text = "";
+		Edit3->Text = "";
+		Edit4->Text = "";
+		Edit5->Text = "";
+		ShowMessage("Datos Guardados");
+	}
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm3::FormCreate(TObject *Sender)
 {
 	ruta = "C:\\Users\\User\\Documents\\Embarcadero\\Studio\\Projects\\ArchivosProgram2\\ArchivosEstructurados\\Dat\\";
 	nom = ruta + "Alumnos.dat";
-	fstream f(nom.c_str(), ios::binary);
+	fstream f(nom.c_str(), ios::binary | ios::in);
 	if(f.fail())
 	{
-        f.open(nom.c_str(), ios::binary | ios::out);
+		f.open(nom.c_str(), ios::binary | ios::out);
 	}
-    f.close();
+	f.close();
 }
 
 //---------------------------------------------------------------------------
 void __fastcall TForm3::Button2Click(TObject *Sender)
 {
-	byte i, x;
-	AnsiString linea = " ";
+	RegAlumno reg;
+	AnsiString linea, lis;
 	fstream f(nom.c_str(), ios::binary | ios::in);
-	for (i = 1; i < 28; i++) {
-			f.read((char*)&x, 1);
-            linea = linea + IntToStr(x) + ',';
-	}
-	f.close();
-    Edit2->Text = linea;
+	lis = ruta + "Listado.csv";
+	fstream t(lis.c_str(), ios::out);
+	if(!f.fail())
+	{
+		linea = "";
+		while(!f.eof())
+		{
+			f.read((char*)& reg, sizeof(reg));
+			if(!f.eof())
+			{
+				linea = IntToStr(reg.cod) + "," + reg.nom + "," + reg.fecha.dia
+						+ "," + reg.fecha.mes + "," + reg.fecha.año;
+				byte n = linea.Length();
+				for(byte i = 1; i <= n; i++)
+					t.put(linea[i]);
+				t.put('\n');
+			}
+		}
+		f.close();
+        t.close();
+    }
 }
 //---------------------------------------------------------------------------
+void __fastcall TForm3::Edit1Exit(TObject *Sender)
+{
+	RegAlumno reg;
+	Word cod;
+	bool hallado = false;
+
+	fstream f(nom.c_str(), ios::binary | ios::in);
+	if(!f.fail())
+	{
+		cod = StrToInt(Edit1->Text);
+		while(!f.eof() && !hallado)
+		{
+			f.read((char*)& reg, sizeof(reg));
+			if(!f.eof())
+			{
+				hallado = (cod == reg.cod);
+			}
+		}
+		if(hallado)
+		{
+			Edit2->Text = reg.nom;
+			Edit3->Text = reg.fecha.dia;
+			Edit4->Text = reg.fecha.mes;
+			Edit5->Text = reg.fecha.año;
+		}
+		else
+		{
+			Edit2->Text = "";
+			Edit3->Text = "";
+			Edit4->Text = "";
+			Edit5->Text = "";
+
+		}
+        f.close();
+    }
+}
+//---------------------------------------------------------------------------
+ // ñÑáéíóúü╡É╓αΘÜ
+ // ñÑáéíóúüÁÉÍÓÚÜ
