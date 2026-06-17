@@ -231,8 +231,6 @@ bool Verif2o(AnsiString nom)
 	Cardinal i = 1;
 	while((i <= n) && !oo)
 	{
-		if(nom[i] == 'O')
-			c++;
 		if(nom[i] == 'o')
 			c++;
 		if(c >= 2)
@@ -245,28 +243,22 @@ void __fastcall TForm3::Button5Click(TObject *Sender)
 {
 	RegAlumno reg;
 	AnsiString aux;
-	AnsiString rutaTemporal = ruta + "temporal.dat";
 	fstream f(nom.c_str(), ios::binary | ios::in);
-	fstream t(rutaTemporal.c_str(), ios::binary | ios::out);
+	fstream t("temporal.dat", ios::binary | ios::out);
 	if(!f.fail())
 	{
-		while(!f.eof())
+		while(f.eof())
 		{
 			f.read((char*)& reg, sizeof(reg));
-			if(!f.eof())
+			aux = reg.nom;
+			if(!Verif2o(aux))
 			{
-                aux = reg.nom;
-				if(!Verif2o(aux))
-				{
-					t.write((char*)& reg, sizeof(reg));
-				}
-            }
+				t.write((char*)& reg, sizeof(reg));
+			}
 		}
 		f.close();
 		t.close();
-	}
-	remove(nom.c_str());
-    rename(rutaTemporal.c_str(), nom.c_str());
+    }
 }
 //---------------------------------------------------------------------------
 

@@ -221,3 +221,52 @@ void __fastcall TForm3::Button4Click(TObject *Sender)
 //---------------------------------------------------------------------------
 //  Tarea: Elimnar los registros de los alumnos que tengan al menos 2 'o' en
 //         su nombre.
+
+//  Verifica si la cadena contiene 2 o mas 'o'
+bool Verif2o(AnsiString nom)
+{
+	bool oo = false;
+	byte c = 0;
+	Cardinal n = nom.Length();
+	Cardinal i = 1;
+	while((i <= n) && !oo)
+	{
+		if(nom[i] == 'O')
+			c++;
+		if(nom[i] == 'o')
+			c++;
+		if(c >= 2)
+			oo = true;
+		i++;
+	}
+    return oo;
+}
+void __fastcall TForm3::Button5Click(TObject *Sender)
+{
+	RegAlumno reg;
+	AnsiString aux;
+	AnsiString rutaTemporal = ruta + "temporal.dat";
+	fstream f(nom.c_str(), ios::binary | ios::in);
+	fstream t(rutaTemporal.c_str(), ios::binary | ios::out);
+	if(!f.fail())
+	{
+		while(!f.eof())
+		{
+			f.read((char*)& reg, sizeof(reg));
+			if(!f.eof())
+			{
+                aux = reg.nom;
+				if(!Verif2o(aux))
+				{
+					t.write((char*)& reg, sizeof(reg));
+				}
+            }
+		}
+		f.close();
+		t.close();
+	}
+	remove(nom.c_str());
+    rename(rutaTemporal.c_str(), nom.c_str());
+}
+//---------------------------------------------------------------------------
+

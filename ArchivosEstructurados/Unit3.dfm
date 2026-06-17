@@ -117,4 +117,13 @@ object Form3: TForm3
     TabOrder = 8
     OnClick = Button4Click
   end
+  object Button5: TButton
+    Left = 400
+    Top = 192
+    Width = 75
+    Height = 25
+    Caption = 'ElimReg2o'
+    TabOrder = 9
+    OnClick = Button5Click
+  end
 end
