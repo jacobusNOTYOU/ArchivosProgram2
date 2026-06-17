@@ -136,4 +136,88 @@ void __fastcall TForm3::Edit1Exit(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
+ // ñÑáéíóúü╡É╓αΘÜ
+ // ñÑáéíóúüÁÉÍÓÚÜ
 
+//  Convierte texto en mayusculas
+AnsiString Mayusculas(AnsiString x)
+{
+	AnsiString min = "qwertyuiopasdfghjklñzxcvbnmáéíóúü";
+	AnsiString may = "QWERTYUIOPASDFGHJKLÑZXCVBNMÁÉÍÓÚÜ";
+	byte i, p, n = x.Length();
+	for(i = 1; i <= n; i++)
+	{
+		p = min.Pos(x[i]);
+		if(p > 0)
+			x[i] = may[p];
+	}
+	return x;
+}
+void __fastcall TForm3::Button3Click(TObject *Sender)
+{
+	RegAlumno reg;
+	AnsiString x;
+	fstream f(nom.c_str(), ios::binary | ios::in | ios::out);
+	if(!f.fail())
+	{
+		while(!f.eof())
+		{
+			f.read((char*)& reg, sizeof(reg));
+			if(!f.eof())
+			{
+				x = Mayusculas(reg.nom);
+				strcpy(reg.nom, x.c_str());
+				f.seekg(-sizeof(reg), ios::cur);
+				f.write((char*)& reg, sizeof(reg));
+				f.seekg(sizeof(reg), ios::cur);
+				f.seekg(-sizeof(reg), ios::cur);
+			}
+		}
+		f.close();
+		ShowMessage("Datos modificados");
+	}
+}
+//---------------------------------------------------------------------------
+AnsiString Minusculas(AnsiString x)
+{
+	AnsiString min = "qwertyuiopasdfghjklñzxcvbnmáéíóúü";
+	AnsiString may = "QWERTYUIOPASDFGHJKLÑZXCVBNMÁÉÍÓÚÜ";
+	byte i, p, n = x.Length();
+	for(i = 1; i <= n; i++)
+	{
+		p = may.Pos(x[i]);
+		if(p > 0)
+			x[i] = min[p];
+	}
+	return x;
+}
+void __fastcall TForm3::Button4Click(TObject *Sender)
+{
+	RegAlumno reg;
+	AnsiString x;
+	fstream f(nom.c_str(), ios::binary | ios::in | ios::out);
+	if(!f.fail())
+	{
+		while(!f.eof())
+		{
+			f.read((char*)& reg, sizeof(reg));
+			if(!f.eof())
+			{
+				if(reg.fecha.mes == 7)
+				{
+					x = Minusculas(reg.nom);
+					strcpy(reg.nom, x.c_str());
+					f.seekg(-sizeof(reg), ios::cur);
+					f.write((char*)& reg, sizeof(reg));
+					f.seekg(sizeof(reg), ios::cur);
+					f.seekg(-sizeof(reg), ios::cur);
+				}
+			}
+		}
+		f.close();
+		ShowMessage("Datos modificados");
+	}
+}
+//---------------------------------------------------------------------------
+//  Tarea: Elimnar los registros de los alumnos que tengan al menos 2 'o' en
+//         su nombre.

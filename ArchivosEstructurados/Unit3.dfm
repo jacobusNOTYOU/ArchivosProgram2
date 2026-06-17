@@ -99,4 +99,22 @@ object Form3: TForm3
     TabOrder = 6
     OnClick = Button2Click
   end
+  object Button3: TButton
+    Left = 208
+    Top = 192
+    Width = 75
+    Height = 25
+    Caption = 'Listado1'
+    TabOrder = 7
+    OnClick = Button3Click
+  end
+  object Button4: TButton
+    Left = 304
+    Top = 192
+    Width = 75
+    Height = 25
+    Caption = 'MayusMes'
+    TabOrder = 8
+    OnClick = Button4Click
+  end
 end

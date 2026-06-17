@@ -478,26 +478,42 @@ int LongitudMaxDeLinea(AnsiString nom)
 //	Justifica un texto a la derecha
 void JustificarDerecha(AnsiString nom)
 {
-	AnsiString ln = "";
+	AnsiString ln;
 	int maxLength = LongitudMaxDeLinea(nom);
+	char x = ' ';
 	fstream f(nom.c_str());
 	fstream t("temporal.txt", ios::out);
 	if(!f.fail())
 	{
 		while(!f.eof())
 		{
-			for(int i = 1;(i <= maxLength) && (!f.eof()); i++)
-				ln = ln + f.get();
+			ln = "";
+			int i = 1;
+			while((i <= maxLength) && !f.eof() && x != '\n')
+			{
+				x = f.get();
+				if(!f.eof())
+					ln = ln + x;
+
+            }
+			if(f.eof())
+				maxLength--;
 
 			while(ln.Length() < maxLength)
-				ln = ' ' + ln;
+				ln = " " + ln;
 
 			while(ln.Length() > maxLength)
-				ln.Delete(1, 1);	
+				ln.Delete(1, 1);
+
+            x = f.get();
+
+			t.write(ln.c_str(), ln.Length());
 		}
 		f.close();
         t.close();
 	}
+	remove(nom.c_str());
+    rename("temporal.txt", nom.c_str());
 }
 
 
