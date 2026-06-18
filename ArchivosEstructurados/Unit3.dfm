@@ -40,6 +40,13 @@ object Form3: TForm3
     Height = 15
     Caption = 'ABM Alumunos'
   end
+  object Label5: TLabel
+    Left = 8
+    Top = 171
+    Width = 48
+    Height = 15
+    Caption = 'Tel'#233'fono:'
+  end
   object Edit1: TEdit
     Left = 111
     Top = 56
@@ -83,7 +90,7 @@ object Form3: TForm3
   end
   object Button1: TButton
     Left = 8
-    Top = 192
+    Top = 232
     Width = 75
     Height = 25
     Caption = 'Guardar'
@@ -92,7 +99,7 @@ object Form3: TForm3
   end
   object Button2: TButton
     Left = 111
-    Top = 192
+    Top = 232
     Width = 75
     Height = 25
     Caption = 'Listado'
@@ -101,7 +108,7 @@ object Form3: TForm3
   end
   object Button3: TButton
     Left = 208
-    Top = 192
+    Top = 232
     Width = 75
     Height = 25
     Caption = 'Listado1'
@@ -110,7 +117,7 @@ object Form3: TForm3
   end
   object Button4: TButton
     Left = 304
-    Top = 192
+    Top = 232
     Width = 75
     Height = 25
     Caption = 'MayusMes'
@@ -119,11 +126,38 @@ object Form3: TForm3
   end
   object Button5: TButton
     Left = 400
-    Top = 192
+    Top = 232
     Width = 75
     Height = 25
     Caption = 'ElimReg2o'
     TabOrder = 9
     OnClick = Button5Click
+  end
+  object Button6: TButton
+    Left = 592
+    Top = 232
+    Width = 75
+    Height = 25
+    Caption = 'Actualizar'
+    Enabled = False
+    TabOrder = 10
+    OnClick = Button6Click
+  end
+  object Edit6: TEdit
+    Left = 111
+    Top = 168
+    Width = 84
+    Height = 23
+    TabOrder = 11
+    Text = 'Edit1'
+  end
+  object Button7: TButton
+    Left = 496
+    Top = 232
+    Width = 75
+    Height = 25
+    Caption = 'Eliminar'
+    TabOrder = 12
+    OnClick = Button7Click
   end
 end
