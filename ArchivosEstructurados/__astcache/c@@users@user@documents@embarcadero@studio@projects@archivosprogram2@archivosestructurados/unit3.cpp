@@ -14,6 +14,7 @@ __fastcall TForm3::TForm3(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
+//  Cuarda el contenido de la ventana en el archivo como un registro
 void __fastcall TForm3::Button1Click(TObject *Sender)
 {
 	RegAlumno reg, reg2;
@@ -23,7 +24,7 @@ void __fastcall TForm3::Button1Click(TObject *Sender)
 	reg.cod = StrToInt(Edit1->Text);
 	aux = Edit2->Text;
 	strcpy(reg.nom, aux.c_str());
-    //  Se asegura de guardar un 0 si es que el nombre es muy largo
+	//  Se asegura de guardar un 0 si es que el nombre es muy largo
 	reg.nom[sizeof(reg.nom) - 1] = 0;
 	reg.fecha.dia = StrToInt(Edit3->Text);
 	reg.fecha.mes = StrToInt(Edit4->Text);
@@ -37,8 +38,11 @@ void __fastcall TForm3::Button1Click(TObject *Sender)
 		while(!f.eof() && !hallado)     //  busqueda secuancial
 		{
 			f.read((char*)& reg2, sizeof(reg2));
-			if(!f.eof())    // verifica si no esta marcado como borrado
+			if(!f.eof())
+			{
+			// verifica si no esta marcado como borrado
 				hallado = (reg2.cod == reg.cod) && (reg.marca != '*');
+			}
 		}
 		if(hallado)
 		{
@@ -58,11 +62,12 @@ void __fastcall TForm3::Button1Click(TObject *Sender)
 		Edit3->Text = "";
 		Edit4->Text = "";
 		Edit5->Text = "";
-        Edit6->Text = "";
+		Edit6->Text = "";
 		ShowMessage("Datos Guardados");
 	}
 }
 //---------------------------------------------------------------------------
+//  Se ejecuta al abrir la ventana para asegurarse de que el archivo existe
 void __fastcall TForm3::FormCreate(TObject *Sender)
 {
 	ruta = "C:\\Users\\User\\Documents\\Embarcadero\\Studio\\Projects\\ArchivosProgram2\\ArchivosEstructurados\\Dat\\";
@@ -76,6 +81,7 @@ void __fastcall TForm3::FormCreate(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
+//  Crea un archivo de text con el contenido del archivo estructurado
 void __fastcall TForm3::Button2Click(TObject *Sender)
 {
 	RegAlumno reg;
@@ -104,10 +110,11 @@ void __fastcall TForm3::Button2Click(TObject *Sender)
 		}
 		f.close();
 		t.close();
-        ShowMessage("Datos modificados");
-    }
+		ShowMessage("Datos modificados");
+	}
 }
 //---------------------------------------------------------------------------
+//  Muestra un registro al precionar tab en el Edit1
 void __fastcall TForm3::Edit1Exit(TObject *Sender)
 {
 	RegAlumno reg;
@@ -144,8 +151,8 @@ void __fastcall TForm3::Edit1Exit(TObject *Sender)
 			Edit6->Text = "";           //  nuevo edit
 
 		}
-        f.close();
-    }
+		f.close();
+	}
 }
 //---------------------------------------------------------------------------
  // ñÑáéíóúü╡É╓αΘÜ
@@ -165,6 +172,7 @@ AnsiString Mayusculas(AnsiString x)
 	}
 	return x;
 }
+//  Convierte en mayusculas todos los nombres del archivo
 void __fastcall TForm3::Button3Click(TObject *Sender)
 {
 	RegAlumno reg;
@@ -175,7 +183,9 @@ void __fastcall TForm3::Button3Click(TObject *Sender)
 		while(!f.eof())
 		{
 			f.read((char*)& reg, sizeof(reg));
-			if(!f.eof())
+			//  Verifica si no se leyo el EOF y si el registro no esta marcado
+			//  como borrado
+			if(!f.eof() && (reg.marca != '*'))
 			{
 				x = Mayusculas(reg.nom);
 				strcpy(reg.nom, x.c_str());
@@ -203,6 +213,7 @@ AnsiString Minusculas(AnsiString x)
 	}
 	return x;
 }
+//  Convierte en minuscula el nombre de los registros que tenga como mes Julio
 void __fastcall TForm3::Button4Click(TObject *Sender)
 {
 	RegAlumno reg;
@@ -213,7 +224,7 @@ void __fastcall TForm3::Button4Click(TObject *Sender)
 		while(!f.eof())
 		{
 			f.read((char*)& reg, sizeof(reg));
-            //  Verifica si no se leyo el EOF y si el registro no esta marcado
+			//  Verifica si no se leyo el EOF y si el registro no esta marcado
 			//	como borrado
 			if(!f.eof() && (reg.marca != '*'))
 			{
@@ -249,12 +260,17 @@ bool Verif2o(AnsiString nom)
 			c++;
 		if(nom[i] == 'o')
 			c++;
+		if(nom[i] == 'Ó')
+			c++;
+		if(nom[i] == 'ó')
+			c++;
 		if(c >= 2)
 			oo = true;
 		i++;
 	}
-    return oo;
+	return oo;
 }
+//  Elimnar los registros de los alumnos que tengan al menos 2 'o' en su nombre.
 void __fastcall TForm3::Button5Click(TObject *Sender)
 {
 	RegAlumno reg;
@@ -267,24 +283,25 @@ void __fastcall TForm3::Button5Click(TObject *Sender)
 		while(!f.eof())
 		{
 			f.read((char*)& reg, sizeof(reg));
-			if(!f.eof())
+			if(!f.eof() && (reg.marca != '*'))
 			{
-                aux = reg.nom;
+				aux = reg.nom;
 				if(!Verif2o(aux))
 				{
 					t.write((char*)& reg, sizeof(reg));
 				}
-            }
+			}
 		}
 		f.close();
 		t.close();
-        ShowMessage("Datos modificados");
+		ShowMessage("Datos modificados");
 	}
 	remove(nom.c_str());
-    rename(rutaTemporal.c_str(), nom.c_str());
+	rename(rutaTemporal.c_str(), nom.c_str());
 }
 //---------------------------------------------------------------------------
-
+//  Actualiza un archivo de la estructura antigua (la primera) a uno de la
+//  nueva estructura (la actual)
 void __fastcall TForm3::Button6Click(TObject *Sender)
 {
 	RegAlumnoAnt rAnt;
@@ -299,6 +316,11 @@ void __fastcall TForm3::Button6Click(TObject *Sender)
 			if(!f1.eof())
 			{
 				reg.cod = rAnt.cod;
+				/*
+				 * 	Como ambos nombres son char[] no se puede directamente
+				 *  asignar el valor del uno en el otro, por eso se usa la
+				 *  funcion "strcpy()"
+				*/
 				strcpy(reg.nom, rAnt.nom);
 				reg.fecha = rAnt.fecha;
 				reg.marca = ' ';

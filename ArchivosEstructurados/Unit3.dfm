@@ -111,7 +111,7 @@ object Form3: TForm3
     Top = 232
     Width = 75
     Height = 25
-    Caption = 'Listado1'
+    Caption = 'Mayusculas'
     TabOrder = 7
     OnClick = Button3Click
   end
@@ -120,7 +120,7 @@ object Form3: TForm3
     Top = 232
     Width = 75
     Height = 25
-    Caption = 'MayusMes'
+    Caption = 'MinusMes'
     TabOrder = 8
     OnClick = Button4Click
   end

@@ -23,6 +23,8 @@ void __fastcall TForm3::Button1Click(TObject *Sender)
 	reg.cod = StrToInt(Edit1->Text);
 	aux = Edit2->Text;
 	strcpy(reg.nom, aux.c_str());
+    //  Se asegura de guardar un 0 si es que el nombre es muy largo
+	reg.nom[sizeof(reg.nom) - 1] = 0;
 	reg.fecha.dia = StrToInt(Edit3->Text);
 	reg.fecha.mes = StrToInt(Edit4->Text);
 	reg.fecha.año = StrToInt(Edit5->Text);
@@ -35,7 +37,7 @@ void __fastcall TForm3::Button1Click(TObject *Sender)
 		while(!f.eof() && !hallado)     //  busqueda secuancial
 		{
 			f.read((char*)& reg2, sizeof(reg2));
-			if(!f.eof())
+			if(!f.eof())    // verifica si no esta marcado como borrado
 				hallado = (reg2.cod == reg.cod) && (reg.marca != '*');
 		}
 		if(hallado)
@@ -51,11 +53,12 @@ void __fastcall TForm3::Button1Click(TObject *Sender)
 		}
 		f.close();
 
-		Edit1->Text = "0";
+		Edit1->Text = "0";  //  Limpiar la pantallita
 		Edit2->Text = "";
 		Edit3->Text = "";
 		Edit4->Text = "";
 		Edit5->Text = "";
+        Edit6->Text = "";
 		ShowMessage("Datos Guardados");
 	}
 }
@@ -86,10 +89,13 @@ void __fastcall TForm3::Button2Click(TObject *Sender)
 		while(!f.eof())
 		{
 			f.read((char*)& reg, sizeof(reg));
-			if(!f.eof())
+			//  Verifica si no se leyo el EOF y si el registro no esta marcado
+			//	como borrado
+			if(!f.eof() && (reg.marca != '*'))
 			{
 				linea = IntToStr(reg.cod) + "," + reg.nom + "," + reg.fecha.dia
-						+ "," + reg.fecha.mes + "," + reg.fecha.año;
+						+ "," + reg.fecha.mes + "," + reg.fecha.año + ","
+						+ reg.telf;
 				byte n = linea.Length();
 				for(byte i = 1; i <= n; i++)
 					t.put(linea[i]);
@@ -135,7 +141,7 @@ void __fastcall TForm3::Edit1Exit(TObject *Sender)
 			Edit3->Text = "";
 			Edit4->Text = "";
 			Edit5->Text = "";
-            Edit6->Text = "";           //  nuevo edit
+			Edit6->Text = "";           //  nuevo edit
 
 		}
         f.close();
@@ -207,7 +213,9 @@ void __fastcall TForm3::Button4Click(TObject *Sender)
 		while(!f.eof())
 		{
 			f.read((char*)& reg, sizeof(reg));
-			if(!f.eof())
+            //  Verifica si no se leyo el EOF y si el registro no esta marcado
+			//	como borrado
+			if(!f.eof() && (reg.marca != '*'))
 			{
 				if(reg.fecha.mes == 7)
 				{
@@ -306,4 +314,42 @@ void __fastcall TForm3::Button6Click(TObject *Sender)
 	}
 }
 //-----------------------------------------------------------------------
+
+//  Elimina el registro de un archivo
+void __fastcall TForm3::Button7Click(TObject *Sender)
+{
+	RegAlumno reg;
+	bool hallado = false;
+	Word codi;
+	fstream f(nom.c_str(), ios::binary | ios::in | ios::out);
+	if(!f.fail())
+	{
+		codi = StrToInt(Edit1->Text);
+        //  Verifica si no se leyo el EOF y si el registro no esta marcado
+		//	como borrado
+		while(!f.eof() && !hallado)        // Busqueda secuencial
+		{
+			f.read((char*)& reg, sizeof(reg));
+			if(!f.eof())
+			{
+				hallado = (reg.cod == codi) && (reg.marca != '*');
+			}
+		}
+		if(hallado)
+		{
+			reg.marca = '*';
+			f.seekg(-sizeof(reg), ios::cur);
+			f.write((char*)& reg, sizeof(reg));
+			Edit1->Text = "0";
+			Edit2->Text = "";
+			Edit3->Text = "";
+			Edit4->Text = "";
+			Edit5->Text = "";
+			Edit6->Text = "";
+			ShowMessage("datos ELIMINADOS");
+		}
+        f.close();
+	}
+}
+//---------------------------------------------------------------------------
 

@@ -56,9 +56,11 @@ struct RegAlumnoAnt{
 	TFecha fecha;
 }; // 28b
 
-#pragma pack(1) //  Evita que el compilador deje huecos en el struct
-				//  funciona desde la anterior linea en adelante
-struct RegAlumno{   //  <-Registro nuevo
+//  Evita que el compilador deje huecos en el struct
+//  funciona desde la anterior linea en adelante
+#pragma pack(1)
+//  Registro nuevo
+struct RegAlumno{
 	char marca;
 	Word cod;
 	char nom[30];
