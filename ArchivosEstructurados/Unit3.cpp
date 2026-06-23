@@ -70,7 +70,7 @@ void __fastcall TForm3::Button1Click(TObject *Sender)
 //  Se ejecuta al abrir la ventana para asegurarse de que el archivo existe
 void __fastcall TForm3::FormCreate(TObject *Sender)
 {
-	ruta = "C:\\Users\\User\\Documents\\Embarcadero\\Studio\\Projects\\ArchivosProgram2\\ArchivosEstructurados\\Dat\\";
+	ruta = "C:\\Users\\User\\Documents\\Embarcadero\\Studio\\Projects\\ArchivosProgram2\\ArchivosIndexados\\Dat\\";
 	nom = ruta + "Alumnos.dat";
 	fstream f(nom.c_str(), ios::binary | ios::in);
 	if(f.fail())
@@ -78,6 +78,22 @@ void __fastcall TForm3::FormCreate(TObject *Sender)
 		f.open(nom.c_str(), ios::binary | ios::out);
 	}
 	f.close();
+	//  Indice por codigo
+	nomIdx = ruta + "IdxCod.idx";
+	fstream i(nomIdx.c_str(), ios::binary | ios::in);
+	if(i.fail())
+	{
+		i.open(nomIdx.c_str(), ios::binary | ios::out);
+	}
+	i.close();
+    // Indice por nombre
+	nomIdxNom = ruta + "IdxNom.idx";
+	fstream in(nomIdxNom.c_str(), ios::binary | ios::in);
+	if(in.fail())
+	{
+		in.open(nomIdxNom.c_str(), ios::binary | ios::out);
+	}
+	in.close();
 }
 
 //---------------------------------------------------------------------------
@@ -371,6 +387,195 @@ void __fastcall TForm3::Button7Click(TObject *Sender)
 			ShowMessage("datos ELIMINADOS");
 		}
         f.close();
+	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::Button8Click(TObject *Sender)
+{
+	RegIdxCod rIdx;
+	RegAlumno reg;
+	fstream fd(nom.c_str(), ios::binary | ios::in);
+	fstream fi(nomIdx.c_str(), ios::binary | ios::out);
+	if(!fd.fail())
+	{
+		while(!fd.eof())
+		{
+			rIdx.pos = fd.tellg();
+			fd.read((char*)& reg, sizeof(reg));
+			if(!fd.eof() && (reg.marca != '*'))
+			{
+				rIdx.cod = reg.cod;
+				fi.write((char*)& rIdx, sizeof(rIdx));
+			}
+		}
+		fd.close();
+		fi.close();
+		ShowMessage("Indice Creado");
+	}
+}
+//---------------------------------------------------------------------------
+//  Busqueda Binaria
+long int TForm3::BusAlumCod(Word codB)
+{
+	long int posi, a, b, c;
+	bool hallado = false;
+	posi = -1;
+	RegIdxCod rIdx;
+	fstream fi(nomIdx.c_str(), ios::binary | ios::in | ios::ate);
+	if(!fi.fail())
+	{
+		a = 0;
+		b = fi.tellg();
+		b = b - sizeof(rIdx);
+		while((a <= b) && !hallado)
+		{
+			c = (a + b) / 2;
+			fi.seekg(c);
+			fi.read((char*)& rIdx, sizeof(rIdx));
+			if(rIdx.cod == codB)
+			{
+				posi = rIdx.pos;
+				hallado = true;
+			}
+			else if(rIdx.cod < codB)
+				b = c - sizeof(rIdx);
+			else
+				a = c + sizeof(rIdx);
+		}
+		fi.close();
+	}
+
+	return posi;
+}
+
+void __fastcall TForm3::Button10Click(TObject *Sender)
+{
+    int algo;
+}
+//---------------------------------------------------------------------------
+//  Ordenamiento SelectionSort
+void TForm3::SelectionSort()
+{
+	RegIdxCod rIdx1, rIdx2;
+	Cardinal a, b, c;
+	long n;
+	fstream fi(nomIdx.c_str(), ios::binary | ios::in | ios::out | ios::ate);
+	if(!fi.fail())
+	{
+		n = fi.tellg();
+		n = n - sizeof(rIdx1);
+		a = 0;
+		while(a < n)
+		{
+			c = a;
+			b = c + sizeof(rIdx1);
+			while(b <= n)
+			{
+    			fi.seekg(c);
+				fi.read((char*)& rIdx1, sizeof(rIdx1));
+				fi.seekg(b);
+				fi.read((char*)& rIdx2, sizeof(rIdx2));
+				if(rIdx1.cod > rIdx2.cod)
+					c = b;
+				b = b + sizeof(rIdx2);
+			}
+			if(a != c)
+			{
+				fi.seekg(a);
+				fi.read((char*)& rIdx2, sizeof(rIdx2));
+				fi.seekg(a);
+				fi.write((char*)& rIdx1, sizeof(rIdx1));
+				fi.seekg(c);
+				fi.write((char*)& rIdx2, sizeof(rIdx2));
+			}
+
+			a = a + sizeof(rIdx1);
+		}
+		fi.close();
+	}
+}
+void __fastcall TForm3::Button9Click(TObject *Sender)
+{
+	SelectionSort();
+    ShowMessage("Indice Ordenado");
+}
+//---------------------------------------------------------------------------
+//  Listado
+void __fastcall TForm3::Button11Click(TObject *Sender)
+{
+	RegIdxCod rIdx;
+	AnsiString aux, lis = ruta + "ListadoIdx.csv";
+	fstream fi(nomIdx.c_str(), ios::binary | ios::in);
+	fstream l(lis.c_str(), ios::out);
+	if(!fi.fail())
+	{
+		while(!fi.eof())
+		{
+			fi.read((char*)& rIdx, sizeof(rIdx));
+			if(!fi.eof())
+			{
+				aux = IntToStr(rIdx.cod) + "," + rIdx.pos;
+				byte n = aux.Length();
+				for(byte i = 1; i <= n; i++)
+					l.put(aux[i]);
+				l.put('\n');
+			}
+		}
+		fi.close();
+		l.close();
+	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::Button12Click(TObject *Sender)
+{
+	RegAlumno reg;
+	RegIdxNom rIdx;
+	fstream f(nom.c_str(), ios::binary | ios::in);
+	fstream i(nomIdxNom.c_str(), ios::out);
+	if(!f.fail())
+	{
+		while(!f.eof())
+		{
+			rIdx.pos = f.tellg();
+			f.read((char*)& reg, sizeof(reg));
+			if(!f.eof() && (reg.marca != '*'))
+			{
+				strcpy(rIdx.nom, reg.nom);
+				i.write((char*)& rIdx, sizeof(rIdx));
+			}
+		}
+		f.close();
+        i.close();
+	}
+    ShowMessage("Indice por nopmbre creado");
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm3::Button13Click(TObject *Sender)
+{
+	RegIdxNom rIdx;
+	AnsiString aux, lis = ruta + "ListadoIdxNom.csv";
+	fstream fi(nomIdxNom.c_str(), ios::binary | ios::in);
+	fstream l(lis.c_str(), ios::out);
+	if(!fi.fail())
+	{
+		while(!fi.eof())
+		{
+			fi.read((char*)& rIdx, sizeof(rIdx));
+			if(!fi.eof())
+			{
+				aux = rIdx.nom;
+				aux = aux + "," + rIdx.pos;
+				byte n = aux.Length();
+				for(byte i = 1; i <= n; i++)
+					l.put(aux[i]);
+				l.put('\n');
+			}
+		}
+		fi.close();
+		l.close();
 	}
 }
 //---------------------------------------------------------------------------

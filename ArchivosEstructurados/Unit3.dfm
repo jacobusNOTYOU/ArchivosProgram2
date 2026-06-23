@@ -47,6 +47,13 @@ object Form3: TForm3
     Height = 15
     Caption = 'Tel'#233'fono:'
   end
+  object Label6: TLabel
+    Left = 22
+    Top = 280
+    Width = 29
+    Height = 15
+    Caption = 'Index'
+  end
   object Edit1: TEdit
     Left = 111
     Top = 56
@@ -159,5 +166,59 @@ object Form3: TForm3
     Caption = 'Eliminar'
     TabOrder = 12
     OnClick = Button7Click
+  end
+  object Button8: TButton
+    Left = 8
+    Top = 320
+    Width = 75
+    Height = 25
+    Caption = 'Crear'
+    TabOrder = 13
+    OnClick = Button8Click
+  end
+  object Button9: TButton
+    Left = 111
+    Top = 320
+    Width = 75
+    Height = 25
+    Caption = 'Ordenar'
+    TabOrder = 14
+    OnClick = Button9Click
+  end
+  object Button10: TButton
+    Left = 208
+    Top = 320
+    Width = 75
+    Height = 25
+    Caption = 'BusBin'
+    TabOrder = 15
+    OnClick = Button10Click
+  end
+  object Button11: TButton
+    Left = 304
+    Top = 320
+    Width = 75
+    Height = 25
+    Caption = 'Listado'
+    TabOrder = 16
+    OnClick = Button11Click
+  end
+  object Button12: TButton
+    Left = 8
+    Top = 351
+    Width = 75
+    Height = 25
+    Caption = 'CrearNom'
+    TabOrder = 17
+    OnClick = Button12Click
+  end
+  object Button13: TButton
+    Left = 111
+    Top = 360
+    Width = 75
+    Height = 25
+    Caption = 'Listado'
+    TabOrder = 18
+    OnClick = Button13Click
   end
 end

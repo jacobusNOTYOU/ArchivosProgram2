@@ -61,7 +61,7 @@ struct RegAlumnoAnt{
 #pragma pack(1)
 //  Registro nuevo
 struct RegAlumno{
-	char marca;
+	char marca;       //    ' ' | '*'
 	Word cod;
 	char nom[30];
 	TFecha fecha;

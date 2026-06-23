@@ -1,0 +1,183 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm3 *Form3;
+//---------------------------------------------------------------------------
+__fastcall TForm3::TForm3(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm3::FormCreate(TObject *Sender)
+{
+	ruta = "C:\\Users\\User\\Documents\\Embarcadero\\Studio\\Projects\\ArchivosProgram2\\ArchivosIndexados\\Datos\\";
+	nom = ruta + "Alumnos.dat";
+	nomIdx = ruta + "IdxCod.idx";
+	fstream f(nom.c_str(), ios::binary | ios::in);
+	if(f.fail())
+	{
+		f.open(nom.c_str(), ios::binary | ios::out);
+	}
+	fstream i(nomIdx.c_str(), ios::binary | ios::in);
+	if(i.fail())
+	{
+		i.open(nomIdx.c_str(), ios::binary | ios::out);
+	}
+	f.close();
+    i.close();
+}
+//---------------------------------------------------------------------------
+//  Busqueda Binaria
+
+//  Crear indice
+void __fastcall TForm3::Button1Click(TObject *Sender)
+{
+RegAlumno reg, reg2;
+	AnsiString aux;
+	bool hallado = false;
+
+	reg.cod = StrToInt(Edit1->Text);
+	aux = Edit2->Text;
+	strcpy(reg.nom, aux.c_str());
+	//  Se asegura de guardar un 0 si es que el nombre es muy largo
+	reg.nom[sizeof(reg.nom) - 1] = 0;
+	reg.fecha.dia = StrToInt(Edit3->Text);
+	reg.fecha.mes = StrToInt(Edit4->Text);
+	reg.fecha.año = StrToInt(Edit5->Text);
+
+	fstream f(nom.c_str(), ios::binary | ios::in | ios::out);
+	if(!f.fail())
+	{
+		while(!f.eof() && !hallado)     //  busqueda secuancial
+		{
+			f.read((char*)& reg2, sizeof(reg2));
+			if(!f.eof())
+			{
+			// verifica si no esta marcado como borrado
+				hallado = (reg2.cod == reg.cod);
+			}
+		}
+		if(hallado)
+		{
+			f.seekg(-sizeof(reg), ios::cur);
+			f.write((char*)&reg, sizeof(reg));
+		}
+		else
+		{
+			f.close();
+			f.open(nom.c_str(), ios::binary | ios::app);
+			f.write((char*)& reg, sizeof(reg));
+		}
+		f.close();
+
+		Edit1->Text = "0";  //  Limpiar la pantallita
+		Edit2->Text = "";
+		Edit3->Text = "";
+		Edit4->Text = "";
+		Edit5->Text = "";
+		ShowMessage("Datos Guardados");
+	}
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm3::Button2Click(TObject *Sender)
+{
+RegAlumno reg;
+	AnsiString linea, lis;
+	fstream f(nom.c_str(), ios::binary | ios::in);
+	lis = ruta + "Listado.csv";
+	fstream t(lis.c_str(), ios::out);
+	if(!f.fail())
+	{
+		linea = "";
+		while(!f.eof())
+		{
+			f.read((char*)& reg, sizeof(reg));
+			//  Verifica si no se leyo el EOF y si el registro no esta marcado
+			//	como borrado
+			if(!f.eof())
+			{
+				linea = IntToStr(reg.cod) + "," + reg.nom + "," + reg.fecha.dia
+						+ "," + reg.fecha.mes + "," + reg.fecha.año;
+				byte n = linea.Length();
+				for(byte i = 1; i <= n; i++)
+					t.put(linea[i]);
+				t.put('\n');
+			}
+		}
+		f.close();
+		t.close();
+		ShowMessage("Datos modificados");
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm3::OnExit(TObject *Sender)
+{
+RegAlumno reg;
+	Word cod;
+	bool hallado = false;
+
+	fstream f(nom.c_str(), ios::binary | ios::in);
+	if(!f.fail())
+	{
+		cod = StrToInt(Edit1->Text);
+		while(!f.eof() && !hallado)
+		{
+			f.read((char*)& reg, sizeof(reg));
+			if(!f.eof())
+			{
+				// Verifica si el registro existe y si no esta marcado como borrado
+				hallado = (cod == reg.cod);
+			}
+		}
+		if(hallado)
+		{
+			Edit2->Text = reg.nom;
+			Edit3->Text = reg.fecha.dia;
+			Edit4->Text = reg.fecha.mes;
+			Edit5->Text = reg.fecha.año;
+		}
+		else
+		{
+			Edit2->Text = "";
+			Edit3->Text = "";
+			Edit4->Text = "";
+			Edit5->Text = "";
+
+		}
+		f.close();
+	}
+
+}
+//---------------------------------------------------------------------------
+//  Creando el indice
+void __fastcall TForm3::Button3Click(TObject *Sender)
+{
+	RegIdxCod rIdx;
+	RegAlumno reg;
+	fstream fd(nom.c_str(), ios::binary | ios::in);
+	fstream fi(nomIdx.c_str(), ios::binary | ios::out);
+	if(!fd.fail())
+	{
+		while(!fd.eof())
+		{
+			rIdx.pos = fd.tellg();
+			fd.read((char*)& reg, sizeof(reg));
+			if(!fd.eof())
+			{
+				rIdx.cod = reg.cod;
+				fi.write((char*)& rIdx, sizeof(rIdx));
+			}
+		}
+		fd.close();
+		fi.close();
+        ShowMessage("Indice Creado");
+    }
+}
+//---------------------------------------------------------------------------

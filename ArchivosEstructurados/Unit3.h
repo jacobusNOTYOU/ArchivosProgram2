@@ -30,6 +30,13 @@ __published:	// IDE-managed Components
 	TLabel *Label5;
 	TEdit *Edit6;
 	TButton *Button7;
+	TLabel *Label6;
+	TButton *Button8;
+	TButton *Button9;
+	TButton *Button10;
+	TButton *Button11;
+	TButton *Button12;
+	TButton *Button13;
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall Button2Click(TObject *Sender);
@@ -39,10 +46,18 @@ __published:	// IDE-managed Components
 	void __fastcall Button5Click(TObject *Sender);
 	void __fastcall Button6Click(TObject *Sender);
 	void __fastcall Button7Click(TObject *Sender);
+	void __fastcall Button8Click(TObject *Sender);
+	void __fastcall Button10Click(TObject *Sender);
+	void __fastcall Button9Click(TObject *Sender);
+	void __fastcall Button11Click(TObject *Sender);
+	void __fastcall Button12Click(TObject *Sender);
+	void __fastcall Button13Click(TObject *Sender);
 private:	// User declarations
-	AnsiString ruta, nom;
+	AnsiString ruta, nom, nomIdx, nomIdxNom;
 public:		// User declarations
 	__fastcall TForm3(TComponent* Owner);
+	long int BusAlumCod(Word codB);
+	void SelectionSort();
 };
 struct TFecha{
 	byte dia;
@@ -61,12 +76,25 @@ struct RegAlumnoAnt{
 #pragma pack(1)
 //  Registro nuevo
 struct RegAlumno{
-	char marca;
+	char marca;       //    ' ' | '*'
 	Word cod;
 	char nom[30];
 	TFecha fecha;
 	Cardinal telf;
 }; //   41b
+
+//  Index por codigo
+struct RegIdxCod{
+	Word cod;
+	Cardinal pos;
+};  //  6b
+
+//  Index por nombre
+struct RegIdxNom{
+	char nom[30];
+	Cardinal pos;
+};	//  34b
+
 //---------------------------------------------------------------------------
 extern PACKAGE TForm3 *Form3;
 //---------------------------------------------------------------------------
