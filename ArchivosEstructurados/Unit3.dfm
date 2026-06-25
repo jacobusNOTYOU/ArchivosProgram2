@@ -205,7 +205,7 @@ object Form3: TForm3
   end
   object Button12: TButton
     Left = 8
-    Top = 351
+    Top = 360
     Width = 75
     Height = 25
     Caption = 'CrearNom'

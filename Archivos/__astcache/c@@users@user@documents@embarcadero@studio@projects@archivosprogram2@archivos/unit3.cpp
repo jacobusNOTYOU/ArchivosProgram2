@@ -34,7 +34,6 @@ Cardinal CantEspacios(AnsiString nom)
 	}
 	return c;
 }
-
 void __fastcall TForm3::Button1Click(TObject *Sender)
 {
 	if(OpenTextFileDialog1->Execute())

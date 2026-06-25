@@ -403,7 +403,7 @@ void __fastcall TForm3::Button8Click(TObject *Sender)
 		{
 			rIdx.pos = fd.tellg();
 			fd.read((char*)& reg, sizeof(reg));
-			if(!fd.eof())
+			if(!fd.eof() && (reg.marca != '*'))
 			{
 				rIdx.cod = reg.cod;
 				fi.write((char*)& rIdx, sizeof(rIdx));
@@ -457,7 +457,7 @@ void __fastcall TForm3::Button10Click(TObject *Sender)
 //  Ordenamiento SelectionSort
 void TForm3::SelectionSort()
 {
-	RegIdxCod rIdx1, rIdx2;
+	RegIdxCod rIdx1, rIdx2, rIdx3;
 	Cardinal a, b, c;
 	long n;
 	fstream fi(nomIdx.c_str(), ios::binary | ios::in | ios::out | ios::ate);
@@ -466,31 +466,39 @@ void TForm3::SelectionSort()
 		n = fi.tellg();
 		n = n - sizeof(rIdx1);
 		a = 0;
+		fi.seekg(a);
+		fi.read((char*)& rIdx3, sizeof(rIdx3));
 		while(a < n)
 		{
+
 			c = a;
+			rIdx1.cod = rIdx3.cod;
+            rIdx1.pos = rIdx3.pos;
 			b = c + sizeof(rIdx1);
+
 			while(b <= n)
 			{
-    			fi.seekg(c);
-				fi.read((char*)& rIdx1, sizeof(rIdx1));
 				fi.seekg(b);
 				fi.read((char*)& rIdx2, sizeof(rIdx2));
 				if(rIdx1.cod > rIdx2.cod)
+				{
 					c = b;
+					rIdx1.cod = rIdx2.cod;
+					rIdx1.pos = rIdx2.pos;
+				}
 				b = b + sizeof(rIdx2);
 			}
 			if(a != c)
 			{
 				fi.seekg(a);
-				fi.read((char*)& rIdx2, sizeof(rIdx2));
-				fi.seekg(a);
 				fi.write((char*)& rIdx1, sizeof(rIdx1));
 				fi.seekg(c);
-				fi.write((char*)& rIdx2, sizeof(rIdx2));
+				fi.write((char*)& rIdx3, sizeof(rIdx3));
 			}
 
-			a = a + sizeof(rIdx1);
+			a = a + sizeof(rIdx3);
+			fi.seekg(a);
+			fi.read((char*)& rIdx3, sizeof(rIdx3));
 		}
 		fi.close();
 	}
@@ -524,6 +532,7 @@ void __fastcall TForm3::Button11Click(TObject *Sender)
 		}
 		fi.close();
 		l.close();
+        ShowMessage("Listado indice creado.");
 	}
 }
 //---------------------------------------------------------------------------
@@ -540,10 +549,9 @@ void __fastcall TForm3::Button12Click(TObject *Sender)
 		{
 			rIdx.pos = f.tellg();
 			f.read((char*)& reg, sizeof(reg));
-			if(!f.eof())
+			if(!f.eof() && (reg.marca != '*'))
 			{
 				strcpy(rIdx.nom, reg.nom);
-                rIdx.nom[sizeof(rIdx.nom) - 1] = 0;
 				i.write((char*)& rIdx, sizeof(rIdx));
 			}
 		}
@@ -567,7 +575,7 @@ void __fastcall TForm3::Button13Click(TObject *Sender)
 			fi.read((char*)& rIdx, sizeof(rIdx));
 			if(!fi.eof())
 			{
-				strcpy(aux.c_str(), rIdx.nom);
+				aux = rIdx.nom;
 				aux = aux + "," + rIdx.pos;
 				byte n = aux.Length();
 				for(byte i = 1; i <= n; i++)
