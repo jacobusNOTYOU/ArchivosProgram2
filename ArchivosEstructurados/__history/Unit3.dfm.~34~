@@ -240,35 +240,8 @@ object Form3: TForm3
     Top = 352
     Width = 75
     Height = 25
-    Caption = 'Ordenar'
+    Caption = 'Button14'
     TabOrder = 19
     OnClick = Button14Click
-  end
-  object Button15: TButton
-    Left = 534
-    Top = 95
-    Width = 75
-    Height = 25
-    Caption = 'Buscar'
-    TabOrder = 20
-    OnClick = Button15Click
-  end
-  object Button16: TButton
-    Left = 472
-    Top = 312
-    Width = 75
-    Height = 25
-    Caption = 'ListOrd'
-    TabOrder = 21
-    OnClick = Button16Click
-  end
-  object Button17: TButton
-    Left = 374
-    Top = 352
-    Width = 75
-    Height = 25
-    Caption = 'ListOrd'
-    TabOrder = 22
-    OnClick = Button17Click
   end
 end

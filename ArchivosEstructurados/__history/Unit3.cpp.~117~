@@ -697,7 +697,7 @@ long int TForm3::BusAlumNom(AnsiString nomB)
 				posi = rIdx.pos;
 				hallado = true;
 			}
-			else if(nomMenor(rIdx.nom, nomB) == nomB)
+			else if(rIdx.nom > nomB)
 				b = c - sizeof(rIdx);
 			else
 				a = c + sizeof(rIdx);
@@ -736,71 +736,6 @@ void __fastcall TForm3::Button15Click(TObject *Sender)
 		Edit6->Text = "";
 		ShowMessage("Alumno no encontrado. :/");
     }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TForm3::Button16Click(TObject *Sender)
-{
-	RegIdxCod rIdx;
-	RegAlumno reg;
-	AnsiString aux, lis = ruta + "ListOrdCod.txt";
-	fstream fl(lis.c_str(), ios::out);
-	fstream fi(nomIdx.c_str(), ios::binary | ios::in);
-	fstream fa(nom.c_str(), ios::binary | ios:: in);
-	if(!fi.fail() && !fa.fail())
-	{
-		while(!fi.eof())
-		{
-			fi.read((char*)& rIdx, sizeof(rIdx));
-			if(!fi.eof())
-			{
-				fa.seekg(rIdx.pos);
-				fa.read((char*)& reg, sizeof(reg));
-				aux = IntToStr(reg.cod) + "," +reg.nom + "," + reg.fecha.dia
-					+ "," + reg.fecha.mes + "," + reg.fecha.año + "," + reg.telf;
-				for(int i = 1; i <= aux.Length(); i++)
-					fl.put(aux[i]);
-				fl.put('\n');
-			}
-		}
-		fi.close();
-		fa.close();
-		fl.close();
-		ShowMessage("Listado Listo. :D");
-	}
-}
-//---------------------------------------------------------------------------
-
-
-void __fastcall TForm3::Button17Click(TObject *Sender)
-{
-	RegIdxNom rIdx;
-	RegAlumno reg;
-	AnsiString aux, lis = ruta + "ListOrdNom.txt";
-	fstream fl(lis.c_str(), ios::out);
-	fstream fi(nomIdxNom.c_str(), ios::binary | ios::in);
-	fstream fa(nom.c_str(), ios::binary | ios:: in);
-	if(!fi.fail() && !fa.fail())
-	{
-		while(!fi.eof())
-		{
-			fi.read((char*)& rIdx, sizeof(rIdx));
-			if(!fi.eof())
-			{
-				fa.seekg(rIdx.pos);
-				fa.read((char*)& reg, sizeof(reg));
-				aux = IntToStr(reg.cod) + "," +reg.nom + "," + reg.fecha.dia
-					+ "," + reg.fecha.mes + "," + reg.fecha.año + "," + reg.telf;
-				for(int i = 1; i <= aux.Length(); i++)
-					fl.put(aux[i]);
-				fl.put('\n');
-			}
-		}
-		fi.close();
-		fa.close();
-		fl.close();
-		ShowMessage("Listado Listo. :D");
-	}
 }
 //---------------------------------------------------------------------------
 

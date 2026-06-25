@@ -592,7 +592,7 @@ void __fastcall TForm3::Button13Click(TObject *Sender)
 //  Devuelve el menor de dos cadenas
 AnsiString nomMenor(AnsiString a, AnsiString b)
 {
-	AnsiString chars = "AaÁáBbCcDdEeÉéFfGgHhIiÍíJjKkLlMmNnÑñOoÓóPpQqRrSsTtUuÚúÜüVvXxYyZz";
+	AnsiString chars = "AaÁáBbCcDdEeÉéFfGgHhIiÍíJjKkMmNnÑñOoÓóPpQqRrSsTtUuÚúÜüVvXxYyZz";
 	AnsiString r;
 
 	bool hallado = false;
@@ -624,183 +624,11 @@ AnsiString nomMenor(AnsiString a, AnsiString b)
 //  Selection Sort por nombre
 void TForm3::SelectionSortNom()
 {
-	RegIdxNom rIdx1, rIdx2, rIdx3;
-	Cardinal a, b, c;
-	long n;
-	fstream fi(nomIdxNom.c_str(), ios::binary | ios::in | ios::out | ios::ate);
-	if(!fi.fail())
-	{
-		n = fi.tellg();
-		n = n - sizeof(rIdx1);
-		a = 0;
-		fi.seekg(a);
-		fi.read((char*)& rIdx3, sizeof(rIdx3));
-		while(a < n)
-		{
 
-			c = a;
-			rIdx1 = rIdx3;
-			b = c + sizeof(rIdx2);
-
-			while(b <= n)
-			{
-				fi.seekg(b);
-				fi.read((char*)& rIdx2, sizeof(rIdx2));
-			if(nomMenor(rIdx1.nom, rIdx2.nom) == rIdx2.nom)
-				{
-					c = b;
-					rIdx1 = rIdx2;
-				}
-				b = b + sizeof(rIdx2);
-			}
-			if(a != c)
-			{
-				fi.seekg(a);
-				fi.write((char*)& rIdx1, sizeof(rIdx1));
-				fi.seekg(c);
-				fi.write((char*)& rIdx3, sizeof(rIdx3));
-			}
-
-			a = a + sizeof(rIdx3);
-			fi.seekg(a);
-			fi.read((char*)& rIdx3, sizeof(rIdx3));
-		}
-		fi.close();
-	}
 }
 void __fastcall TForm3::Button14Click(TObject *Sender)
 {
-	SelectionSortNom();
-    ShowMessage("Indice por nombres ordenado.");
-}
-//---------------------------------------------------------------------------
-//  Busqueda Bianria
-long int TForm3::BusAlumNom(AnsiString nomB)
-{
-	long int posi, a, b, c;
-	bool hallado = false;
-	posi = -1;
-	RegIdxNom rIdx;
-	fstream fi(nomIdxNom.c_str(), ios::binary | ios::in | ios::ate);
-	if(!fi.fail())
-	{
-		a = 0;
-		b = fi.tellg();
-		b = b - sizeof(rIdx);
-		while((a <= b) && !hallado)
-		{
-			c = (((a / sizeof(rIdx)) + (b / sizeof(rIdx))) / 2) * sizeof(rIdx);
-			fi.seekg(c);
-			fi.read((char*)& rIdx, sizeof(rIdx));
-			if(rIdx.nom == nomB)
-			{
-				posi = rIdx.pos;
-				hallado = true;
-			}
-			else if(nomMenor(rIdx.nom, nomB) == nomB)
-				b = c - sizeof(rIdx);
-			else
-				a = c + sizeof(rIdx);
-		}
-		fi.close();
-	}
-
-	return posi;
-}
-
-void __fastcall TForm3::Button15Click(TObject *Sender)
-{
-	long pos = BusAlumNom(Edit2->Text);
-	if(pos >= 0)
-	{
-		fstream f(nom.c_str(), ios::binary | ios::in);
-		RegAlumno reg;
-		if(!f.fail())
-		{
-			f.seekg(pos);
-			f.read((char*)& reg, sizeof(reg));
-			Edit1->Text = reg.cod;
-			Edit3->Text = reg.fecha.dia;
-			Edit4->Text = reg.fecha.mes;
-			Edit5->Text = reg.fecha.año;
-			Edit6->Text = reg.telf;
-        }
-	}
-	else
-	{
-		Edit1->Text = "0";  //  Limpiar la pantallita
-		Edit2->Text = "";
-		Edit3->Text = "";
-		Edit4->Text = "";
-		Edit5->Text = "";
-		Edit6->Text = "";
-		ShowMessage("Alumno no encontrado. :/");
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TForm3::Button16Click(TObject *Sender)
-{
-	RegIdxCod rIdx;
-	RegAlumno reg;
-	AnsiString aux, lis = ruta + "ListOrdCod.txt";
-	fstream fl(lis.c_str(), ios::out);
-	fstream fi(nomIdx.c_str(), ios::binary | ios::in);
-	fstream fa(nom.c_str(), ios::binary | ios:: in);
-	if(!fi.fail() && !fa.fail())
-	{
-		while(!fi.eof())
-		{
-			fi.read((char*)& rIdx, sizeof(rIdx));
-			if(!fi.eof())
-			{
-				fa.seekg(rIdx.pos);
-				fa.read((char*)& reg, sizeof(reg));
-				aux = IntToStr(reg.cod) + "," +reg.nom + "," + reg.fecha.dia
-					+ "," + reg.fecha.mes + "," + reg.fecha.año + "," + reg.telf;
-				for(int i = 1; i <= aux.Length(); i++)
-					fl.put(aux[i]);
-				fl.put('\n');
-			}
-		}
-		fi.close();
-		fa.close();
-		fl.close();
-		ShowMessage("Listado Listo. :D");
-	}
-}
-//---------------------------------------------------------------------------
-
-
-void __fastcall TForm3::Button17Click(TObject *Sender)
-{
-	RegIdxNom rIdx;
-	RegAlumno reg;
-	AnsiString aux, lis = ruta + "ListOrdNom.txt";
-	fstream fl(lis.c_str(), ios::out);
-	fstream fi(nomIdxNom.c_str(), ios::binary | ios::in);
-	fstream fa(nom.c_str(), ios::binary | ios:: in);
-	if(!fi.fail() && !fa.fail())
-	{
-		while(!fi.eof())
-		{
-			fi.read((char*)& rIdx, sizeof(rIdx));
-			if(!fi.eof())
-			{
-				fa.seekg(rIdx.pos);
-				fa.read((char*)& reg, sizeof(reg));
-				aux = IntToStr(reg.cod) + "," +reg.nom + "," + reg.fecha.dia
-					+ "," + reg.fecha.mes + "," + reg.fecha.año + "," + reg.telf;
-				for(int i = 1; i <= aux.Length(); i++)
-					fl.put(aux[i]);
-				fl.put('\n');
-			}
-		}
-		fi.close();
-		fa.close();
-		fl.close();
-		ShowMessage("Listado Listo. :D");
-	}
+    Edit4->Text = nomMenor(Edit2->Text, Edit3->Text);
 }
 //---------------------------------------------------------------------------
 
