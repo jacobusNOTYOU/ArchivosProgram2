@@ -43,6 +43,7 @@ __published:	// IDE-managed Components
 	TButton *Button15;
 	TButton *Button16;
 	TButton *Button17;
+	TButton *Button18;
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall Button2Click(TObject *Sender);
@@ -62,6 +63,7 @@ __published:	// IDE-managed Components
 	void __fastcall Button15Click(TObject *Sender);
 	void __fastcall Button16Click(TObject *Sender);
 	void __fastcall Button17Click(TObject *Sender);
+	void __fastcall Button18Click(TObject *Sender);
 private:	// User declarations
 	AnsiString ruta, nom, nomIdx, nomIdxNom;
 public:		// User declarations

@@ -804,3 +804,36 @@ void __fastcall TForm3::Button17Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TForm3::Button18Click(TObject *Sender)
+{
+	RegIdxCod ri;
+	RegAlumno reg;
+	AnsiString lin;
+	fstream fi(nomIdx.c_str(), ios::binary | ios::in | ios::ate);
+	lin = ruta + "temporal.txt";
+	fstream ft(lin.c_str(), ios::out);
+	fstream fd(nom.c_str(), ios::binary | ios::in);
+	if(!fi.fail())
+	{
+		while(fi.tellg() > 0)
+		{
+			fi.seekg(-sizeof(ri), ios::cur);
+			fi.read((char*)& ri, sizeof(ri));
+			//lin = IntToStr(ri.cod) + "," + ri.pos;
+			fd.seekg(ri.pos);
+			fd.read((char*)& reg, sizeof(reg));
+			lin = IntToStr(reg.cod) + "," + reg.nom + "," + reg.fecha.dia + ","
+				+ reg.fecha.mes + "," + reg.fecha.año + "," + reg.telf;
+			for(byte i = 1; i <= lin.Length(); i++)
+				ft.put(lin[i]);
+			ft.put('\n');
+			fi.seekg(-sizeof(ri), ios::cur);
+		}
+		fi.close();
+		ft.close();
+        fd.close();
+        ShowMessage("Listado generado");
+	}
+}
+//---------------------------------------------------------------------------
+

@@ -271,4 +271,13 @@ object Form3: TForm3
     TabOrder = 22
     OnClick = Button17Click
   end
+  object Button18: TButton
+    Left = 688
+    Top = 232
+    Width = 75
+    Height = 25
+    Caption = 'Lis.Ord.Des.'
+    TabOrder = 23
+    OnClick = Button18Click
+  end
 end
