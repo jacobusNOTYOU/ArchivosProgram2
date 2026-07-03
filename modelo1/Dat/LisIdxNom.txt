@@ -1,0 +1,5 @@
+pedro,44
+Martha,176
+Marian,88
+juan,0
+José,132

@@ -1,0 +1,5 @@
+	LISTADO DE ALUMNOS
+100,1234,juan,calle1,11/2/2000
+400,2345,pedro,calle2,6/2/2001
+200,3456,maria,calle3,1/1/2003
+300,4567,josé,calle4,14/8/2003

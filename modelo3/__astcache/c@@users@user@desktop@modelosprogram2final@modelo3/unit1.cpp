@@ -1,0 +1,164 @@
+﻿//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm3 *Form3;
+//---------------------------------------------------------------------------
+__fastcall TForm3::TForm3(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+//  Devuelve la cantidad de vocales que tiene una cadena
+Word Vocales(AnsiString str)
+{
+	Word c = 0;
+	AnsiString voc = "aeiouAEIOUáéíóúüÁÉÍÓÚÜ";
+	for(int i = 1; i <= str.Length(); i++)
+	{
+		if(voc.Pos(str[i]) > 0)
+            c++;
+    }
+	return c;
+}
+//  Borra linea con mas de 2 vocales
+void Ejercicio1(AnsiString nom)
+{
+	AnsiString lin;
+	fstream f(nom.c_str(), ios::in);
+	AnsiString temp = "C:\\Users\\User\\Desktop\\ModelosProgram2Final\\modelo3\\Dat\\temporal.txt";
+	fstream t(temp.c_str(), ios::out);
+	if(!f.fail())
+	{
+		while(!f.eof())
+		{
+            lin = "";
+			while(!f.eof() && (f.peek() != '\n'))
+			{
+				lin = lin + (char)f.get();
+			}
+			if(f.peek() == '\n')
+				lin = lin + '\n';
+            f.get();
+			if(Vocales(lin) <= 2)
+			{
+				for(int i = 1; i <= lin.Length(); i++)
+					t.put(lin[i]);
+			}
+		}
+		f.close();
+		t.close();
+		ShowMessage("Listo!");
+		remove(nom.c_str());
+        rename(temp.c_str(), nom.c_str());
+    }
+}
+void __fastcall TForm3::Button1Click(TObject *Sender)
+{
+	if(OpenTextFileDialog1->Execute())
+	{
+		Ejercicio1(OpenTextFileDialog1->FileName);
+    }
+}
+//---------------------------------------------------------------------------
+//  verifica si un caracter es letra
+bool EsLetra(char c)
+{
+	AnsiString abc = "QWERTYUIOPASDFGHJKLÑZXCVBNMÁÉÍÓÚÜqwertyuiopasdfghjklñzxcvbnmáéíóúü";
+	return (abc.Pos(c) > 0);
+}
+//  Intercambia la primera palabra con la ultima de una cadena
+AnsiString intercambiarPalabras(AnsiString lin)
+{
+	AnsiString modLin, temp;
+	int i, j;
+	bool unaPalabra;
+	//	1. Obtener la ultima palabra
+	j = lin.Length();
+	while((j > 0) && !EsLetra(lin[j]))
+	{
+		temp = temp + lin[j];
+		j--;
+	}
+	while((j > 0) && EsLetra(lin[j]))
+	{
+		temp = temp + lin[j];
+		j--;
+	}
+	//  1.1. Invertir temp
+	for(j = temp.Length(); j > 0; j--)
+		modLin = modLin + temp[j];
+	//  2. Obtener la primera palabra
+	j = lin.Length() - temp.Length();
+	temp = "";
+	i = 1;
+	while ((i <= lin.Length()) && !EsLetra(lin[i]))
+	{
+		temp = temp + lin[i];
+		i++;
+	}
+	while((i <= lin.Length()) && EsLetra(lin[i]))
+	{
+		temp = temp + lin[i];
+		i++;
+	}
+	unaPalabra = !(j > temp.Length());
+	//  3. Agregar el resto hasta la ultima palabra
+	if(unaPalabra)
+		i = 1;
+	for(int k = i; k <= j; k++)
+		modLin = modLin + lin[k];
+	//  4. Agregar la primera palabra
+	if(!unaPalabra)
+	{
+		for(i = 1; i <= temp.Length(); i++)
+			modLin = modLin + temp[i];
+    }
+
+	return modLin;
+}
+//  Intercambiar la primera palabra con la ultima de cada linea
+void __fastcall TForm3::Button2Click(TObject *Sender)
+{
+	if(OpenTextFileDialog1->Execute())
+	{
+		AnsiString lin, nom = OpenTextFileDialog1->FileName;
+		char c;
+		fstream f(nom.c_str(), ios::in);
+		fstream t("temporal.txt", ios::out);
+		if(!f.fail())
+		{
+			while(!f.eof())
+			{
+				//  Leer Una Linea
+                lin = "";
+				while(!f.eof() && (f.peek() != '\n'))
+				{
+					f.get(c);
+					if(!f.eof())
+						lin = lin + c;
+				}
+                f.get(c);
+				//  Modificar una linea
+				lin = intercambiarPalabras(lin);
+				//  Escribir una linea en temporal
+				for(int i = 1; i <= lin.Length(); i++)
+					t.put(lin[i]);
+				t.put('\n');
+			}
+			f.close();
+			t.close();
+			remove(nom.c_str());
+			rename("temporal.txt", nom.c_str());
+			ShowMessage("El mundo está de cabeza!!");
+        }
+
+    }
+}
+//---------------------------------------------------------------------------
+
