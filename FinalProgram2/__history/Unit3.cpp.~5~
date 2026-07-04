@@ -1,0 +1,99 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit3.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm3 *Form3;
+//---------------------------------------------------------------------------
+__fastcall TForm3::TForm3(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm3::Button1Click(TObject *Sender)
+{
+    RegAlumno reg, reg2;
+	AnsiString aux;
+	bool hallado = false;
+	fstream f(nom.c_str(), ios::binary | ios::in | ios::out);
+	if(!f.fail())
+	{
+		reg.cod = StrToInt(Edit1->Text);
+		aux = Edit2->Text;
+		strcpy(reg.nom, aux.c_str());
+		reg.nom[sizeof(reg.nom) - 1] = 0;
+		reg.fecha.dia = StrToInt(Edit3->Text);
+		reg.fecha.mes = StrToInt(Edit4->Text);
+		reg.fecha.año = StrToInt(Edit5->Text);
+
+		while(!f.eof() && !hallado)
+		{
+			f.read((char*)& reg2, sizeof(reg2));
+			if(!f.eof())
+			{
+				hallado = (reg2.cod == reg.cod);
+			}
+		}
+		if(!hallado)
+		{
+			f.close();
+			f.open(nom.c_str(), ios::binary | ios::app);
+			f.write((char*)& reg, sizeof(reg));
+			f.close();
+		}
+		else
+		{
+			f.seekg(-sizeof(reg), ios::cur);
+			f.write((char*)& reg, sizeof(reg));
+			f.close();
+		}
+        ShowMessage("Guardado.");
+    }
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm3::FormCreate(TObject *Sender)
+{
+	ruta = "C:\\Users\\User\\Desktop\\FinalProgram2\\Dat\\";
+    nom = ruta + "Alumnos.dat";
+	fstream f(nom.c_str(), ios::binary | ios::in);
+	if(f.fail())
+	{
+		f.close();
+		f.open(nom.c_str(), ios::binary | ios::out);
+	}
+	f.close();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm3::Button2Click(TObject *Sender)
+{
+    RegAlumno reg;
+	fstream f(nom.c_str(), ios::binary | ios::in);
+	AnsiString lis = ruta + "Listado.txt";
+	fstream t(lis.c_str(), ios::out);
+    lis = "\tLISTADO DE ALUMNOS\n";
+	for(byte i = 1; i <= lis.Length(); i++)
+		t.put(lis[i]);
+	if(!f.fail())
+	{
+		while(!f.eof())
+		{
+			f.read((char*)& reg, sizeof(reg));
+			if(!f.eof())
+			{
+				lis = "" + AnsiString(reg.cod) + "," + (AnsiString)reg.nom + ","
+					+ reg.fecha.dia + "/" + reg.fecha.mes + "/" + reg.fecha.año;
+				for(int i = 1; i <= lis.Length(); i++)
+					t.put(lis[i]);
+				t.put('\n');
+			}
+		}
+		f.close();
+		t.close();
+		ShowMessage("Listado listo.");
+    }
+}
+//---------------------------------------------------------------------------
